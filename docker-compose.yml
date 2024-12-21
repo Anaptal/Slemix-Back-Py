@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  auth-service:
+    build: 
+      context: .
+      dockerfile: docker/auth.dockerfile
+    ports:
+      - "4000:4000"
+    env_file: .env
+
+  db-service:
+    build:
+      context: .
+      dockerfile: docker/db.dockerfile
+    ports:
+      - "5000:5000"
+    env_file: .env
+
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/gateway.dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+      - db-service
+    env_file: .env
